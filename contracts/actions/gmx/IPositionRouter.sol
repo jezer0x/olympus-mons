@@ -13,6 +13,23 @@ struct IncreasePositionRequest {
     uint256 blockNumber;
     uint256 blockTime;
     bool hasCollateralInETH;
+    address callbackTarget;
+}
+
+struct DecreasePositionRequest {
+    address account;
+    address indexToken;
+    uint256 collateralDelta;
+    uint256 sizeDelta;
+    bool isLong;
+    address receiver;
+    uint256 acceptablePrice;
+    uint256 minOut;
+    uint256 executionFee;
+    uint256 blockNumber;
+    uint256 blockTime;
+    bool withdrawETH;
+    address callbackTarget;
 }
 
 struct DecreasePositionParams {
@@ -35,21 +52,6 @@ struct IncreasePositionParams {
     uint256 _acceptablePrice;
 }
 
-struct DecreasePositionRequest {
-    address account;
-    address indexToken;
-    uint256 collateralDelta;
-    uint256 sizeDelta;
-    bool isLong;
-    address receiver;
-    uint256 acceptablePrice;
-    uint256 minOut;
-    uint256 executionFee;
-    uint256 blockNumber;
-    uint256 blockTime;
-    bool withdrawETH;
-}
-
 interface IPositionRouter {
     function createIncreasePosition(
         address[] memory _path,
@@ -60,8 +62,9 @@ interface IPositionRouter {
         bool _isLong,
         uint256 _acceptablePrice,
         uint256 _executionFee,
-        bytes32 _referralCode
-    ) external payable;
+        bytes32 _referralCode,
+        address _callbackTarget
+    ) external payable returns (bytes32); 
 
     function createIncreasePositionETH(
         address[] memory _path,
@@ -71,8 +74,9 @@ interface IPositionRouter {
         bool _isLong,
         uint256 _acceptablePrice,
         uint256 _executionFee,
-        bytes32 _referralCode
-    ) external payable;
+        bytes32 _referralCode,
+        address _callbackTarget
+    ) external payable returns (bytes32); 
 
     function createDecreasePosition(
         address[] memory _path,
@@ -84,8 +88,9 @@ interface IPositionRouter {
         uint256 _acceptablePrice,
         uint256 _minOut,
         uint256 _executionFee,
-        bool _withdrawETH
-    ) external payable;
+        bool _withdrawETH,
+        address _callbackTarget
+    ) external payable returns (bytes32); 
 
     function increasePositionsIndex(address) external returns (uint256);
 

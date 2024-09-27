@@ -30,9 +30,9 @@ contract GmxConfirmRequestExecOrCancel is IAction, DelegatePerform {
         delegateOnly
         returns (ActionResponse memory)
     {
-        (bool isIncrease, bytes32 key, address collateralTokenAddr, address indexTokenAddr, bool _isLong) = abi.decode(
+        (bytes32 key, bool isIncrease, address collateralTokenAddr, address indexTokenAddr, bool _isLong) = abi.decode(
             action.data,
-            (bool, bytes32, address, address, bool)
+            (bytes32, bool, address, address, bool)
         );
 
         if (isIncrease) {
@@ -59,6 +59,7 @@ contract GmxConfirmRequestExecOrCancel is IAction, DelegatePerform {
             indexTokenAddrs,
             isLongs
         );
+
         if (positions[0] == 0) {
             // size of the position is 0
             return
